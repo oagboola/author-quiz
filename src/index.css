@@ -1,3 +1,5 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
 body {
   margin: 0;
   padding: 0;
@@ -11,4 +13,17 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+
+.authorImage {
+  width: 300px;
+}
+
+.book {
+  height: 50px;
+  background-color: #c1d5f9;
+  padding: 10px;
+  border-left: 5px solid #9191f3;
+  margin: 10px;
 }
