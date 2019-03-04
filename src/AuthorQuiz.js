@@ -39,10 +39,23 @@ function Turn(props) {
   )
 }
 
-function Continue() {
-  return (
-    <div>Let's continue with this!</div>
-  )
+function Continue(props) {
+  const handleContinue = (event) => {
+    event.preventDefault();
+    props.resetState(props.authors);
+  }
+  switch(props.highlight) {
+    case 'correct':
+      return (
+         <button onClick={handleContinue}>Continue</button>
+      )
+      break;
+     case 'wrong':
+       return ''
+       break;
+      default:
+        return ''
+  }
 }
 
 function Footer() {
@@ -70,11 +83,19 @@ class AuthorQuiz extends Component {
   }
 
   state = {
-    turnData: this.props.turnData,
+    turnData: this.props.getTurnData(this.props.authors),
     highlight: ''
   }
 
+  resetState = (authors) => {
+    this.setState({
+      turnData: this.props.getTurnData(this.props.authors),
+      highlight: ''
+    });
+  }
+
   checkAnswer = (selectedAnswer) => {
+    console.log('turnData: ', this.state.turnData)
     const isCorrect = this.state.turnData.author.books.some(title => title == selectedAnswer);
     this.setState({
       highlight: isCorrect ? 'correct' : 'wrong'
@@ -87,7 +108,7 @@ class AuthorQuiz extends Component {
       <div className="container-fluid">
         <Hero />
         <Turn {...turnData} highlight={highlight} checkAnswer={this.checkAnswer} />
-        <Continue />
+        <Continue highlight={highlight} authors={this.props.authors} resetState={this.resetState}/>
         <Footer />
       </div>
     );

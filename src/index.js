@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import AuthorQuiz from './AuthorQuiz';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, withRouter } from 'react-router-dom';
 import AddAuthor from './AddAuthor.js'
 import { shuffle, sample } from 'underscore';
 
@@ -150,8 +150,26 @@ function getTurnData(authors) {
 
 function AuthorQuizWrapper() {
   return(
-    <AuthorQuiz authors={authors} turnData={getTurnData(authors)}/>
+    <AuthorQuiz authors={authors} getTurnData={getTurnData}/>
   )
+}
+
+class AddAuthorWrapper extends Component {
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
+  addAuthor = (author) => {
+    authors.push(author);
+    this.props.history.push('/');
+  }
+
+  render() {
+    return(
+      <AddAuthor authors={authors} turnData={getTurnData(authors)} addAuthor={this.addAuthor}/>
+    )
+  }
 }
 
 class App extends Component {
@@ -160,7 +178,7 @@ class App extends Component {
       <BrowserRouter>
         <React.Fragment>
           <Route exact path='/' component={AuthorQuizWrapper} />
-          <Route exact path='/add' components={{content: AddAuthor}} />
+          <Route exact path='/add' component={AddAuthorWrapper} />
         </React.Fragment>
       </BrowserRouter>
     )
